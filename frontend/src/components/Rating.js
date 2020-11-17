@@ -1,9 +1,24 @@
-import React from 'react'
+import React from "react";
 
 const Rating = ({ value, text, color }) => {
   return (
-    <div className='rating'>
-      <span>
+    <div className="rating">
+      {[...Array(5).keys()].map((el) =>
+        el + 1 <= value ? (
+          <span key={el} className="material-icons" style={{ color }}>
+            star
+          </span>
+        ) : value % 1 !== 0 && el + 1 === Math.ceil(value) ? (
+          <span key={el} className="material-icons" style={{ color }}>
+            star_half
+          </span>
+        ) : (
+          <span key={el} className="material-icons" style={{ color }}>
+            star_outline
+          </span>
+        )
+      )}
+      {/* <span>
         <i
           style={{ color }}
           className={
@@ -62,14 +77,14 @@ const Rating = ({ value, text, color }) => {
               : 'far fa-star'
           }
         ></i>
-      </span>
-      <span>{text && text}</span>
+      </span> */}
+      <span style={{ color }}>{text && text}</span>
     </div>
-  )
-}
+  );
+};
 
 Rating.defaultProps = {
-  color: '#f8e825',
-}
+  color: "#1f98f4",
+};
 
-export default Rating
+export default Rating;

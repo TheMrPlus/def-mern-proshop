@@ -42,12 +42,12 @@ const Product = ({ product }) => {
             />
           </figure>
           <div className="cards__item__info">
-            <h5 className="cards__item__text">{product.name}</h5>
-            <h6 className="cards__item__text">{product.price}</h6>
             <Rating
               value={product.rating}
               text={`${product.numReviews} reviews`}
             />
+            <h5 className="cards__item__text">{product.name}</h5>
+            <h6 className="cards__item__text">{product.price}</h6>
           </div>
         </Link>
       </li>
