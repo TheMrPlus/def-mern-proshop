@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { LinkContainer } from "react-router-bootstrap";
-import { Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
-import SearchBox from "./SearchBox";
-import { logout } from "../actions/userActions";
+import { Link } from "react-router-dom";
+import SearchBox from "../SearchBox";
+import { logout } from "../../actions/userActions";
+import { Button } from "react-bootstrap";
+import "./Header.css";
 
 const Header = () => {
   const dispatch = useDispatch();
+  const [click, setClick] = useState(false);
+  const [button, setButton] = useState(true);
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -16,9 +19,75 @@ const Header = () => {
     dispatch(logout());
   };
 
+  const showButton = () => {
+    if (window.innerWidth <= 960) {
+      setButton(false);
+    } else {
+      setButton(true);
+    }
+  };
+
+  const closeMobileMenu = () => {
+    setClick(false);
+  };
+
+  const handleClick = () => {
+    setClick(!click);
+  };
+
+  useEffect(() => {
+    showButton();
+  });
+
   return (
-    <header>
-      <Navbar expand="lg" collapseOnSelect className="navbar-root">
+    <>
+      <nav>
+        <div className="nav-bar-container">
+          <Link to="/" onClick={() => setClick(false)} className="nav-logo">
+            PROSHOP
+          </Link>
+          <div className="mobile-icon" onClick={() => setClick(!click)}>
+            {click ? (
+              <span class="material-icons menu-icon">clear</span>
+            ) : (
+              <span class="material-icons menu-icon">menu</span>
+            )}
+          </div>
+          <ul
+            className="nav-menu"
+            onClick={handleClick}
+            style={{ left: click ? 0 : "-100%" }}
+          >
+            <li className="nav-item">
+              <Link to="/" onClick={closeMobileMenu} className="nav-links">
+                Home
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                to="/products"
+                onClick={closeMobileMenu}
+                className="nav-links"
+              >
+                Products
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                to="/profile"
+                onClick={closeMobileMenu}
+                className="nav-links"
+              >
+                Profile
+              </Link>
+            </li>
+            <li className="nav-item-btn nav-item">
+              <button className="sign-in-out-button">Sign In</button>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      {/* <Navbar expand="lg" collapseOnSelect className="navbar-root">
         <Container>
           <LinkContainer to="/">
             <Navbar.Brand>ProShop</Navbar.Brand>
@@ -64,8 +133,8 @@ const Header = () => {
             <Route render={({ history }) => <SearchBox history={history} />} />
           </Navbar.Collapse>
         </Container>
-      </Navbar>
-    </header>
+      </Navbar> */}
+    </>
   );
 };
 
